@@ -20,6 +20,13 @@ public partial class PKMEditor
 
         LoadPartyStats(pk9);
         UpdateStats();
+        if ((Species)Entity.Species == Species.Dunsparce&&Entity.EncryptionConstant % 100 == 0)
+        {
+            pb_3SegDudun.Visible = true;
+        } else
+        {
+            pb_3SegDudun.Visible = false;
+        }
     }
 
     private PK9 PreparePK9()

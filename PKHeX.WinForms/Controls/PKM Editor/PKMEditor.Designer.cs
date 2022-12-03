@@ -123,7 +123,7 @@ namespace PKHeX.WinForms.Controls
             this.L_CatchRate = new System.Windows.Forms.Label();
             this.CR_PK1 = new PKHeX.WinForms.Controls.CatchRate();
             this.FLP_SizeCP = new System.Windows.Forms.FlowLayoutPanel();
-            this.SizeCP = new PKHeX.WinForms.Controls.SizeCP();
+            this.SizeCP = new PKHeX.WinForms.Controls.SizeCP(); this.pb_3SegDudun = new System.Windows.Forms.PictureBox();
             this.Tab_Met = new System.Windows.Forms.TabPage();
             this.TB_HomeTracker = new System.Windows.Forms.TextBox();
             this.L_HomeTracker = new System.Windows.Forms.Label();
@@ -279,6 +279,7 @@ namespace PKHeX.WinForms.Controls
             this.FLP_ShinyLeaf.SuspendLayout();
             this.FLP_CatchRate.SuspendLayout();
             this.FLP_SizeCP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_3SegDudun)).BeginInit();
             this.Tab_Met.SuspendLayout();
             this.GB_EggConditions.SuspendLayout();
             this.FLP_Met.SuspendLayout();
@@ -748,6 +749,7 @@ namespace PKHeX.WinForms.Controls
             // FLP_FormLeft
             // 
             this.FLP_FormLeft.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.FLP_FormLeft.Controls.Add(this.pb_3SegDudun);
             this.FLP_FormLeft.Controls.Add(this.Label_Form);
             this.FLP_FormLeft.Controls.Add(this.L_FormArgument);
             this.FLP_FormLeft.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
@@ -1465,6 +1467,19 @@ namespace PKHeX.WinForms.Controls
             this.SizeCP.Name = "SizeCP";
             this.SizeCP.Size = new System.Drawing.Size(204, 90);
             this.SizeCP.TabIndex = 0;
+            // 
+            // pb_3SegDudun
+            // 
+            this.pb_3SegDudun.Image = global::PKHeX.WinForms.Properties.Resources._3segdudun;
+            this.pb_3SegDudun.InitialImage = global::PKHeX.WinForms.Properties.Resources.rare_icon;
+            this.pb_3SegDudun.Location = new System.Drawing.Point(76, 2);
+            this.pb_3SegDudun.Margin = new System.Windows.Forms.Padding(0, 2, 2, 0);
+            this.pb_3SegDudun.Name = "pb_3SegDudun";
+            this.pb_3SegDudun.Size = new System.Drawing.Size(20, 20);
+            this.pb_3SegDudun.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pb_3SegDudun.TabIndex = 63;
+            this.pb_3SegDudun.TabStop = false;
+            this.pb_3SegDudun.Visible = false;
             // 
             // Tab_Met
             // 
@@ -2888,6 +2903,7 @@ namespace PKHeX.WinForms.Controls
             this.FLP_ShinyLeaf.ResumeLayout(false);
             this.FLP_CatchRate.ResumeLayout(false);
             this.FLP_SizeCP.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_3SegDudun)).EndInit();
             this.Tab_Met.ResumeLayout(false);
             this.Tab_Met.PerformLayout();
             this.GB_EggConditions.ResumeLayout(false);
@@ -3158,5 +3174,6 @@ namespace PKHeX.WinForms.Controls
         private System.Windows.Forms.Label L_ObedienceLevel;
         private System.Windows.Forms.MaskedTextBox TB_ObedienceLevel;
         private System.Windows.Forms.Label L_FormArgument;
+        private System.Windows.Forms.PictureBox pb_3SegDudun;
     }
 }
