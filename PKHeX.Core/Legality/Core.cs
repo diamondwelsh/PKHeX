@@ -110,6 +110,7 @@ public static partial class Legal
         PA8 pa8 => !pa8.LA,
         PB8 pb8 => !pb8.BDSP,
         PK8 pk8 => pk8.IsSideTransfer || pk8.BattleVersion != 0,
+        PK9 pk9 => !(pk9.SV || (pk9.IsEgg && pk9.Version == 0)),
         _ => false,
     };
 
@@ -121,6 +122,18 @@ public static partial class Legal
     {
         return pk is not PA8;
     }
+
+    /// <summary>
+    /// Indicate if PP Ups are available for use.
+    /// </summary>
+    /// <param name="moveID">Move ID</param>
+    public static bool IsPPUpAvailable(ushort moveID) => moveID switch
+    {
+        0 => false,
+        (int)Move.Sketch => false, // BD/SP v1.0 could use PP Ups on Sketch, but not in later versions. Disallow anyways.
+        (int)Move.RevivalBlessing => false,
+        _ => true,
+    };
 
     public static int GetMaxLengthOT(int generation, LanguageID language) => language switch
     {

@@ -32,6 +32,9 @@ internal static class Encounters9
         new(SL) { Gift = true, Species = 052, Shiny = Never, Level = 05, Location = 130, Form = 2, FlawlessIVCount = 3 }, // Meowth-2
         new(VL) { Gift = true, Species = 052, Shiny = Never, Level = 05, Location = 131, Form = 2, FlawlessIVCount = 3 }, // Meowth-2
 
+        // Scripted
+        new (SV) { Gift = true, Species = 734, Level = 02, Location = 064 }, // Yungoos level 2, no Marks in Inlet Grotto. Only Poké Ball available in early game.
+
         // Box Legendary (Battle Form)
         new(SL) { Species = 998, Shiny = Never, Level = 72, Location = 124, Size = 128, Ability = OnlyFirst, Nature = Nature.Adamant, TeraType = GemType.Fighting, IVs = new(25,31,25,31,31,25), Moves = new(416,339,878,053) }, // Koraidon
         new(VL) { Species = 999, Shiny = Never, Level = 72, Location = 124, Size = 128, Ability = OnlyFirst, Nature = Nature.Modest,  TeraType = GemType.Electric, IVs = new(25,31,25,31,31,25), Moves = new(063,268,879,408) }, // Miraidon
@@ -43,12 +46,12 @@ internal static class Encounters9
         new(SV) { Species = 997, Shiny = Never, Level = 60, Location = 048, Size = 128, FlawlessIVCount = 3 }, // Chi-Yu
 
         // Former Titans
-        new(SV) { Species = 944, Shiny = Never, Level = 29, Location = 032, Size = 255, Ability = OnlyFirst,  Gender = 0, Nature = Nature.Quirky,  IVs = new(30,30,30,30,30,30), Moves = new(231,029,035,201), IsTitan = true }, // Orthworm
-        new(SV) { Species = 952, Shiny = Never, Level = 57, Location = 040, Size = 255, Ability = OnlyFirst,  Gender = 0, Nature = Nature.Quiet,   IVs = new(30,30,30,30,30,30), Moves = new(330,196,269,406), IsTitan = true }, // Tatsugiri
-        new(SV) { Species = 959, Shiny = Never, Level = 20, Location = 022, Size = 255, Ability = OnlyHidden, Gender = 1, Nature = Nature.Jolly,   IVs = new(30,30,30,30,30,30), Moves = new(088,017,365,259), IsTitan = true }, // Bombirdier
         new(SV) { Species = 962, Shiny = Never, Level = 16, Location = 020, Size = 255, Ability = OnlyFirst,  Gender = 1, Nature = Nature.Gentle,  IVs = new(30,30,30,30,30,30), Moves = new(011,249,335,317), IsTitan = true }, // Klawf
+        new(SV) { Species = 959, Shiny = Never, Level = 20, Location = 022, Size = 255, Ability = OnlyHidden, Gender = 1, Nature = Nature.Jolly,   IVs = new(30,30,30,30,30,30), Moves = new(088,017,365,259), IsTitan = true }, // Bombirdier
+        new(SV) { Species = 944, Shiny = Never, Level = 29, Location = 032, Size = 255, Ability = OnlyFirst,  Gender = 0, Nature = Nature.Quirky,  IVs = new(30,30,30,30,30,30), Moves = new(231,029,035,201), IsTitan = true }, // Orthworm
         new(SL) { Species = 978, Shiny = Never, Level = 45, Location = 024, Size = 255, Ability = OnlyFirst,              Nature = Nature.Naughty, IVs = new(30,30,30,30,30,30), Moves = new(229,280,282,707), IsTitan = true }, // Great Tusk
-        new(VL) { Species = 986, Shiny = Never, Level = 45, Location = 024, Size = 255, Ability = OnlyFirst,              Nature = Nature.Naughty, IVs = new(30,30,30,30,30,30), Moves = new(229,280,442,707), IsTitan = true }, // Iron Treads
+        new(VL) { Species = 986, Shiny = Never, Level = 45, Location = 024, Size = 255, Ability = OnlyFirst,              Nature = Nature.Naughty, IVs = new(30,30,30,30,30,30), Moves = new(229,442,282,707), IsTitan = true }, // Iron Treads
+        new(SV) { Species = 952, Shiny = Never, Level = 57, Location = 040, Size = 255, Ability = OnlyFirst,  Gender = 0, Nature = Nature.Quiet,   IVs = new(30,30,30,30,30,30), Moves = new(330,196,269,406), IsTitan = true }, // Tatsugiri
 
         // Dummy Tatsugiri
         new(SV) { Species = 952, Shiny = Never, Level = 45, Location = 040, Size = 128,          }, // Tatsugiri
@@ -57,40 +60,23 @@ internal static class Encounters9
 
         #region Chest Form Gimmighoul
         // Gimmighoul has 13 separate static encounter entries, all differing by Level. These can be placed in numerous parts of the map, so for now, manually define them all here.
-      //new(SV) { Species = 976, Shiny = Never, Level = 01, Location = -01 }, // Gimmighoul
-
         new(SV) { Species = 976, Shiny = Never, Level = 05, Location = 006 }, // Gimmighoul - South Province (Area One)
-
         new(SV) { Species = 976, Shiny = Never, Level = 10, Location = 012 }, // Gimmighoul - South Province (Area Two)
         new(SV) { Species = 976, Shiny = Never, Level = 10, Location = 020 }, // Gimmighoul - South Province (Area Three)
-
         new(SV) { Species = 976, Shiny = Never, Level = 15, Location = 014 }, // Gimmighoul - South Province (Area Four)
         new(SV) { Species = 976, Shiny = Never, Level = 15, Location = 018 }, // Gimmighoul - South Province (Area Five)
         new(SV) { Species = 976, Shiny = Never, Level = 15, Location = 022 }, // Gimmighoul - West Province (Area One)
         new(SV) { Species = 976, Shiny = Never, Level = 15, Location = 034 }, // Gimmighoul - East Province (Area One)
-
         new(SV) { Species = 976, Shiny = Never, Level = 20, Location = 024 }, // Gimmighoul - Asado Desert
-
         new(SV) { Species = 976, Shiny = Never, Level = 25, Location = 032 }, // Gimmighoul - East Province (Area Three)
         new(SV) { Species = 976, Shiny = Never, Level = 25, Location = 058 }, // Gimmighoul - West Paldean Sea
-
-      //new(SV) { Species = 976, Shiny = Never, Level = 30, Location = -01 }, // Gimmighoul
-
         new(SV) { Species = 976, Shiny = Never, Level = 35, Location = 038 }, // Gimmighoul - Glaseado Mountain
-
         new(SV) { Species = 976, Shiny = Never, Level = 40, Location = 016 }, // Gimmighoul - South Province (Area Six)
-
-      //new(SV) { Species = 976, Shiny = Never, Level = 45, Location = -01 }, // Gimmighoul
-
         new(SV) { Species = 976, Shiny = Never, Level = 50, Location = 026 }, // Gimmighoul - West Province (Area Two)
         new(SV) { Species = 976, Shiny = Never, Level = 50, Location = 040 }, // Gimmighoul - Casseroya Lake
         new(SV) { Species = 976, Shiny = Never, Level = 50, Location = 046 }, // Gimmighoul - North Province (Area One)
         new(SV) { Species = 976, Shiny = Never, Level = 50, Location = 048 }, // Gimmighoul - North Province (Area Two)
         new(SV) { Species = 976, Shiny = Never, Level = 50, Location = 109 }, // Gimmighoul - Socarrat Trail
-
-      //new(SV) { Species = 976, Shiny = Never, Level = 55, Location = -01 }, // Gimmighoul
-
-      //new(SV) { Species = 976, Shiny = Never, Level = 60, Location = -01 }, // Gimmighoul
         #endregion
     };
 

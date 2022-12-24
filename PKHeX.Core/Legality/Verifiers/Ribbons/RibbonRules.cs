@@ -73,14 +73,25 @@ public static class RibbonRules
         return false;
     }
 
+    public static bool IsRibbonValidMasterRank(PKM pk, IEncounterTemplate enc, EvolutionHistory evos)
+    {
+        // Legends can compete in Ranked starting from Series 10.
+        // Past gen Pokemon can get the ribbon only if they've been reset.
+        if (evos.HasVisitedSWSH && IsRibbonValidMasterRankSWSH(pk, enc))
+            return true;
+
+        // Only Paldea natives can compete in Ranked. No Legends/Sub-Legends/Paradoxes as of Series 1.
+        if (evos.HasVisitedGen9 && IsRibbonValidMasterRankSV(pk))
+            return true;
+
+        return false;
+    }
+
     /// <summary>
     /// Checks if the entity participated in SW/SH ranked battles for the <see cref="IRibbonSetCommon8.RibbonMasterRank"/> ribbon.
     /// </summary>
-    public static bool IsRibbonValidMasterRankSWSH(PKM pk, IEncounterTemplate enc, EvolutionHistory evos)
+    private static bool IsRibbonValidMasterRankSWSH(PKM pk, IEncounterTemplate enc)
     {
-        if (!evos.HasVisitedSWSH)
-            return false;
-
         if (enc.Generation < 8 && pk is IBattleVersion { BattleVersion: 0 })
             return false;
 
@@ -97,6 +108,21 @@ public static class RibbonRules
         // Series 13 rule-set was the first time Ranked Battles allowed the use of Mythical Pokémon.
         // All species that can exist in SW/SH can compete in ranked.
         return true;
+    }
+
+    private static bool IsRibbonValidMasterRankSV(ISpeciesForm pk)
+    {
+        var species = pk.Species;
+        if (Legal.Legends.Contains(species))
+            return false;
+        if (Legal.SubLegends.Contains(species))
+            return false;
+        if (species is >= (int)Species.GreatTusk and <= (int)Species.IronValiant)
+            return false;
+
+        var pt = PersonalTable.SV;
+        var pi = pt.GetFormEntry(species, pk.Form);
+        return pi.IsInDex; // no foreign species, such as Charmander, Wooper-0, and Meowth-2
     }
 
     /// <summary>

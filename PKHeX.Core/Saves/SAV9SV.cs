@@ -74,7 +74,7 @@ public sealed class SAV9SV : SaveFile, ISaveBlock9Main, ISCBlockArray, ISaveFile
     public PlayerFashion9 PlayerFashion => Blocks.PlayerFashion;
     public PlayerAppearance9 PlayerAppearance => Blocks.PlayerAppearance;
     public RaidSpawnList9 Raid => Blocks.Raid;
-    public FixedSpawnList9 FixedSpawns => Blocks.FixedSpawns;
+    public RaidSevenStar9 RaidSevenStar => Blocks.RaidSevenStar;
     #endregion
 
     protected override SaveFile CloneInternal()
@@ -273,6 +273,12 @@ public sealed class SAV9SV : SaveFile, ISaveBlock9Main, ISCBlockArray, ISaveFile
             return;
         var b = Blocks.GetBlock(SaveBlockAccessor9SV.KBoxWallpapers);
         b.Data[box] = (byte)value;
+    }
+
+    public byte BoxLegendWallpaperFlag
+    {
+        get => Blocks.GetBlock(SaveBlockAccessor9SV.KBoxWallpapers).Data[BoxLayout9.BoxCount];
+        set => Blocks.GetBlock(SaveBlockAccessor9SV.KBoxWallpapers).Data[BoxLayout9.BoxCount] = value;
     }
 
     public void CollectAllStakes()

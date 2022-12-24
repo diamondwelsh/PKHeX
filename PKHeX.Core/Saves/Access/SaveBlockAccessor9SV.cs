@@ -24,7 +24,7 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
     public PlayerFashion9 PlayerFashion { get; }
     public PlayerAppearance9 PlayerAppearance { get; }
     public RaidSpawnList9 Raid { get; }
-    public FixedSpawnList9 FixedSpawns { get; }
+    public RaidSevenStar9 RaidSevenStar { get; }
 
     public SaveBlockAccessor9SV(SAV9SV sav)
     {
@@ -42,7 +42,7 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
         PlayerFashion = new PlayerFashion9(sav, GetBlock(KCurrentClothing));
         PlayerAppearance = new PlayerAppearance9(sav, GetBlock(KCurrentAppearance));
         Raid = new RaidSpawnList9(sav, GetBlock(KTeraRaids));
-        FixedSpawns = new FixedSpawnList9(sav, GetBlock(KFixedSymbolRetainer));
+        RaidSevenStar = new RaidSevenStar9(sav, GetBlock(KSevenStarRaids));
     }
 
     // Arrays (Blocks)
@@ -62,6 +62,7 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
     private const uint KPlayTime = 0xEDAFF794; // Time Played
     private const uint KSessionLength = 0x1522C79C; // Milliseconds(?) elapsed
     private const uint KOverworld = 0x173304D8; // [0x158+7C][20] overworld pokemon
+    private const uint KGimmighoul = 0x53DC955C; // ulong seed x2 (today and tomorrow); Gimmighoul struct (0x20): bool is_active, u64 hash, u64 seed, bool ??, bool first_time
     private const uint KTeraRaids = 0xCAAC8800;
     public const uint KBoxesUnlocked = 0x71825204;
     public const uint KFusedCalyrex = 0x916BCA9E; // Calyrex
@@ -70,6 +71,7 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
     private const uint KMysteryGift = 0x99E1625E;
     private const uint KLastSaved = 0x7495969E; // u64 time_t
     private const uint KEnrollmentDate = 0xC7409C89;
+    private const uint KPlayRecords = 0x549B6033; // 0x18 per entry, first 8 bytes always 01, u64 fnv hash of entry, last 8 bytes value
     private const uint KSandwiches = 0x29B4AED2; // [0xC][151] index, unlocked, times made
     private const uint KCurrentClothing = 0x64235B3D;
     private const uint KCurrentAppearance = 0x812FC3E3;
@@ -83,8 +85,9 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
     private const uint KFashionUnlockedPhoneCase = 0xED0AC675;
     private const uint KPlayerPhoto1 = 0x14C5A101;
     private const uint KPlayerPhoto2 = 0xF8B14C88;
-    private const uint KFixedSymbolRetainer = 0x74ABB9CC;
+    private const uint KPlayerTrainerIcon = 0xD41F4FC4;
     private const uint KRentalTeams = 0x19CB0339;
+    private const uint KSevenStarRaids = 0x8B14392F;
 
     private const uint KBCATFixedRewardItemArray = 0x7D6C2B82; // fixed_reward_item_array
     private const uint KBCATLotteryRewardItemArray = 0xA52B4811; // lottery_reward_item_array
@@ -934,7 +937,7 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
     private const uint KIndexReceivedBadgeGround = 0xBDAC74B3; // WEVT_NUSHI_JIMEN_CLEAR
     private const uint WEVT_RIDE_HAPPINESS = 0xD9DF9254;
     private const uint WEVT_SUB_047_RACIPE_BADGE_RELEASE = 0x8A3575A5;
-    
+
     // 0 = sealed, 1 = seal lifted, 2 = captured
     private const uint KShrineStateTingLu = 0xA3B2E1E8; // WEVT_SUB_014_EVENT_STATE_UTHUWA
     private const uint KShrineStateChienPao = 0xB6D28884; // WEVT_SUB_015_EVENT_STATE_TSURUGI
@@ -966,5 +969,86 @@ public sealed class SaveBlockAccessor9SV : SCBlockAccessor, ISaveBlock9Main
     private const uint WSYS_SCHOOL_MAP_NEW_FLAG_VALUE = 0xEF63CAB5;
     private const uint WSYS_XMENU_RELEASE = 0x5452A1B1;
     private const uint WSYS_YMAP_CLEAR_EFFECT_DONE = 0x2F532744;
+    #endregion
+
+    #region EncountOutbreakSave
+    private const uint KMassOutbreak01CenterPos   = 0x2ED42F4D; // EncountOutbreakSave_centerPos[0]
+    private const uint KMassOutbreak01DummyPos    = 0x4A13BE7C; // EncountOutbreakSave_dummyPos[0]
+    private const uint KMassOutbreak01Species     = 0x76A2F996; // EncountOutbreakSave_monsno[0]
+    private const uint KMassOutbreak01Form        = 0x29B4615D; // EncountOutbreakSave_formno[0]
+    private const uint KMassOutbreak01Found       = 0x7E203623; // EncountOutbreakSave_isFind[0]
+    private const uint KMassOutbreak01NumKOed     = 0x4B16FBC2; // EncountOutbreakSave_subjugationCount[0]
+    private const uint KMassOutbreak01TotalSpawns = 0xB7DC495A; // EncountOutbreakSave_subjugationLimit[0]
+
+    private const uint KMassOutbreak02CenterPos   = 0x2ED5F198; // EncountOutbreakSave_centerPos[1]
+    private const uint KMassOutbreak02DummyPos    = 0x4A118F71; // EncountOutbreakSave_dummyPos[1]
+    private const uint KMassOutbreak02Species     = 0x76A0BCF3; // EncountOutbreakSave_monsno[1]
+    private const uint KMassOutbreak02Form        = 0x29B84368; // EncountOutbreakSave_formno[1]
+    private const uint KMassOutbreak02Found       = 0x7E22DF86; // EncountOutbreakSave_isFind[1]
+    private const uint KMassOutbreak02NumKOed     = 0x4B14BF1F; // EncountOutbreakSave_subjugationCount[1]
+    private const uint KMassOutbreak02TotalSpawns = 0xB7DA0CB7; // EncountOutbreakSave_subjugationLimit[1]
+
+    private const uint KMassOutbreak03CenterPos   = 0x2ECE09D3; // EncountOutbreakSave_centerPos[2]
+    private const uint KMassOutbreak03DummyPos    = 0x4A0E135A; // EncountOutbreakSave_dummyPos[2]
+    private const uint KMassOutbreak03Species     = 0x76A97E38; // EncountOutbreakSave_monsno[2]
+    private const uint KMassOutbreak03Form        = 0x29AF8223; // EncountOutbreakSave_formno[2]
+    private const uint KMassOutbreak03Found       = 0x7E25155D; // EncountOutbreakSave_isFind[2]
+    private const uint KMassOutbreak03NumKOed     = 0x4B1CA6E4; // EncountOutbreakSave_subjugationCount[2]
+    private const uint KMassOutbreak03TotalSpawns = 0xB7E1F47C; // EncountOutbreakSave_subjugationLimit[2]
+
+    private const uint KMassOutbreak04CenterPos   = 0x2ED04676; // EncountOutbreakSave_centerPos[3]
+    private const uint KMassOutbreak04DummyPos    = 0x4A0BD6B7; // EncountOutbreakSave_dummyPos[3]
+    private const uint KMassOutbreak04Species     = 0x76A6E26D; // EncountOutbreakSave_monsno[3]
+    private const uint KMassOutbreak04Form        = 0x29B22B86; // EncountOutbreakSave_formno[3]
+    private const uint KMassOutbreak04Found       = 0x7E28F768; // EncountOutbreakSave_isFind[3]
+    private const uint KMassOutbreak04NumKOed     = 0x4B1A77D9; // EncountOutbreakSave_subjugationCount[3]
+    private const uint KMassOutbreak04TotalSpawns = 0xB7DFC571; // EncountOutbreakSave_subjugationLimit[3]
+
+    private const uint KMassOutbreak05CenterPos   = 0x2EC78531; // EncountOutbreakSave_centerPos[4]
+    private const uint KMassOutbreak05DummyPos    = 0x4A1FFBD8; // EncountOutbreakSave_dummyPos[4]
+    private const uint KMassOutbreak05Species     = 0x76986F3A; // EncountOutbreakSave_monsno[4]
+    private const uint KMassOutbreak05Form        = 0x29A9D701; // EncountOutbreakSave_formno[4]
+    private const uint KMassOutbreak05Found       = 0x7E13F8C7; // EncountOutbreakSave_isFind[4]
+    private const uint KMassOutbreak05NumKOed     = 0x4B23391E; // EncountOutbreakSave_subjugationCount[4]
+    private const uint KMassOutbreak05TotalSpawns = 0xB7E886B6; // EncountOutbreakSave_subjugationLimit[4]
+
+    private const uint KMassOutbreak06CenterPos   = 0x2ECB673C; // EncountOutbreakSave_centerPos[5]
+    private const uint KMassOutbreak06DummyPos    = 0x4A1C868D; // EncountOutbreakSave_dummyPos[5]
+    private const uint KMassOutbreak06Species     = 0x76947F97; // EncountOutbreakSave_monsno[5]
+    private const uint KMassOutbreak06Form        = 0x29AB994C; // EncountOutbreakSave_formno[5]
+    private const uint KMassOutbreak06Found       = 0x7E16A22A; // EncountOutbreakSave_isFind[5]
+    private const uint KMassOutbreak06NumKOed     = 0x4B208FBB; // EncountOutbreakSave_subjugationCount[5]
+    private const uint KMassOutbreak06TotalSpawns = 0xB7E49713; // EncountOutbreakSave_subjugationLimit[5]
+
+    private const uint KMassOutbreak07CenterPos   = 0x2EC1CC77; // EncountOutbreakSave_centerPos[6]
+    private const uint KMassOutbreak07DummyPos    = 0x4A1A50B6; // EncountOutbreakSave_dummyPos[6]
+    private const uint KMassOutbreak07Species     = 0x769D40DC; // EncountOutbreakSave_monsno[6]
+    private const uint KMassOutbreak07Form        = 0x29A344C7; // EncountOutbreakSave_formno[6]
+    private const uint KMassOutbreak07Found       = 0x7E1A8B01; // EncountOutbreakSave_isFind[6]
+    private const uint KMassOutbreak07NumKOed     = 0x4B28E440; // EncountOutbreakSave_subjugationCount[6]
+    private const uint KMassOutbreak07TotalSpawns = 0xB7EE31D8; // EncountOutbreakSave_subjugationLimit[6]
+
+    private const uint KMassOutbreak08CenterPos   = 0x2EC5BC1A; // EncountOutbreakSave_centerPos[7]
+    private const uint KMassOutbreak08DummyPos    = 0x4A166113; // EncountOutbreakSave_dummyPos[7]
+    private const uint KMassOutbreak08Species     = 0x769B11D1; // EncountOutbreakSave_monsno[7]
+    private const uint KMassOutbreak08Form        = 0x29A5EE2A; // EncountOutbreakSave_formno[7]
+    private const uint KMassOutbreak08Found       = 0x7E1C4D4C; // EncountOutbreakSave_isFind[7]
+    private const uint KMassOutbreak08NumKOed     = 0x4B256EF5; // EncountOutbreakSave_subjugationCount[7]
+    private const uint KMassOutbreak08TotalSpawns = 0xB7EABC8D; // EncountOutbreakSave_subjugationLimit[7]
+    #endregion
+
+    #region Fixed Symbol Encounter Storage
+    // Each struct is 0x170: u64 hash, bool active, 0x158 bytes pkm, 7 bytes alignment, u32 unknown, 4 bytes alignment
+    // Game fills up each block in this order, and checks them in this order when loading up previously-encountered fixed spawns.
+    private const uint KFixedSymbolRetainer01 = 0x74ABBD32;
+    private const uint KFixedSymbolRetainer02 = 0x74ABBEE5;
+    private const uint KFixedSymbolRetainer03 = 0x74ABB9CC;
+    private const uint KFixedSymbolRetainer04 = 0x74ABBB7F;
+    private const uint KFixedSymbolRetainer05 = 0x74ABB666;
+    private const uint KFixedSymbolRetainer06 = 0x74ABB819;
+    private const uint KFixedSymbolRetainer07 = 0x74ABB300;
+    private const uint KFixedSymbolRetainer08 = 0x74ABB4B3;
+    private const uint KFixedSymbolRetainer09 = 0x74ABCACA;
+    private const uint KFixedSymbolRetainer10 = 0x74ABCC7D;
     #endregion
 }

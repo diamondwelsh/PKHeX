@@ -87,8 +87,9 @@ public static class FormInfo
     /// <param name="species">Original species</param>
     /// <param name="oldForm">Original form</param>
     /// <param name="newForm">Current form</param>
-    /// <param name="format">Current format</param>
-    public static bool IsFormChangeable(ushort species, byte oldForm, byte newForm, int format)
+    /// <param name="origin">Encounter context</param>
+    /// <param name="current">Current context</param>
+    public static bool IsFormChangeable(ushort species, byte oldForm, byte newForm, EntityContext origin, EntityContext current)
     {
         if (FormChange.Contains(species))
             return true;
@@ -99,11 +100,20 @@ public static class FormInfo
         // Gen8: Form changing improved; can pick any Form & Ability combination.
         if (species == (int)Zygarde)
         {
-            return format switch
+            return current switch
             {
-                6 => false,
-                7 => newForm >= 2 || (oldForm == 1 && newForm == 0),
+                EntityContext.Gen6 => false,
+                EntityContext.Gen7 => newForm >= 2 || (oldForm == 1 && newForm == 0),
                 _ => true,
+            };
+        }
+        if (species is (int)Deerling or (int)Sawsbuck)
+        {
+            return origin switch
+            {
+                EntityContext.Gen5 => true,
+                EntityContext.Gen9 => true,
+                _ => false, // todo home sv
             };
         }
         return false;
@@ -227,13 +237,13 @@ public static class FormInfo
     /// </summary>
     /// <param name="species">Entity species</param>
     /// <param name="form">Entity form</param>
-    /// <param name="format">Current generation format</param>
-    public static bool IsTotemForm(ushort species, byte form, int format) => format == 7 && IsTotemForm(species, form);
+    /// <param name="context">Current generation format</param>
+    public static bool IsTotemForm(ushort species, byte form, EntityContext context) => context == EntityContext.Gen7 && IsTotemForm(species, form);
 
     /// <summary>
     /// Checks if the <see cref="form"/> for the <see cref="species"/> is a Totem form.
     /// </summary>
-    /// <remarks>Use <see cref="IsTotemForm(ushort,byte,int)"/> if you aren't 100% sure the format is 7.</remarks>
+    /// <remarks>Use <see cref="IsTotemForm(ushort,byte,EntityContext)"/> if you aren't 100% sure the format is 7.</remarks>
     /// <param name="species">Entity species</param>
     /// <param name="form">Entity form</param>
     public static bool IsTotemForm(ushort species, byte form)
@@ -261,9 +271,9 @@ public static class FormInfo
         return --form;
     }
 
-    public static bool IsLordForm(ushort species, byte form, int generation)
+    public static bool IsLordForm(ushort species, byte form, EntityContext context)
     {
-        if (generation != 8)
+        if (context != EntityContext.Gen8a)
             return false;
         return IsLordForm(species, form);
     }

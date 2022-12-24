@@ -557,6 +557,8 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
         {
             if (sender == B_Raids)
                 OpenDialog(new SAV_Raid9(sv, sv.Raid));
+            else if (sender == B_RaidsSevenStar)
+                OpenDialog(new SAV_RaidSevenStar9(sv, sv.RaidSevenStar));
         }
         else if (SAV is SAV8SWSH swsh)
         {
@@ -1131,6 +1133,7 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
         B_MailBox.Visible = sav is SAV2 or SAV3 or SAV4 or SAV5;
 
         B_Raids.Visible = sav is SAV8SWSH or SAV9SV;
+        B_RaidsSevenStar.Visible = sav is SAV9SV;
         B_RaidArmor.Visible = sav is SAV8SWSH {SaveRevision: >= 1};
         B_RaidCrown.Visible = sav is SAV8SWSH {SaveRevision: >= 2};
         GB_SAVtools.Visible = B_Blocks.Visible = true;

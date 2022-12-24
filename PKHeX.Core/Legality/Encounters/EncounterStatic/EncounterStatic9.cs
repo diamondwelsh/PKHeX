@@ -13,8 +13,9 @@ public sealed record EncounterStatic9(GameVersion Version) : EncounterStatic(Ver
     public bool IsTitan { get; init; }
 
     private bool NoScalarsDefined => Size == 0;
-    public bool GiftWithLanguage => Gift; // Nice error by GameFreak -- all gifts (including eggs) set the HT_Language memory value in addition to OT_Language.
+    public bool GiftWithLanguage => Gift && !ScriptedYungoos; // Nice error by GameFreak -- all gifts (including eggs) set the HT_Language memory value in addition to OT_Language.
     public bool StarterBoxLegend => Gift && Species is (int)Core.Species.Koraidon or (int)Core.Species.Miraidon;
+    public bool ScriptedYungoos => Species == (int)Core.Species.Yungoos && Level == 2;
 
     protected override bool IsMatchPartial(PKM pk)
     {
@@ -47,7 +48,7 @@ public sealed record EncounterStatic9(GameVersion Version) : EncounterStatic(Ver
     {
         base.ApplyDetails(tr, criteria, pk);
         var pk9 = (PK9)pk;
-        if (Gift)
+        if (Gift && !ScriptedYungoos)
             pk9.HT_Language = (byte)pk.Language;
         if (StarterBoxLegend)
             pk9.FormArgument = 1; // Not Ride Form.
@@ -67,7 +68,7 @@ public sealed record EncounterStatic9(GameVersion Version) : EncounterStatic(Ver
             height = weight = Gift ? Size : undefinedSize;
             scale = Size;
         }
-        
+
         const byte rollCount = 1;
         var pi = PersonalTable.SV.GetFormEntry(Species, Form);
         var param = new GenerateParam9((byte)pi.Gender, FlawlessIVCount, rollCount, height, weight, scale, Ability, Shiny);
@@ -76,7 +77,6 @@ public sealed record EncounterStatic9(GameVersion Version) : EncounterStatic(Ver
         var success = this.TryApply64(pk9, init, param, criteria, IVs.IsSpecified);
         if (!success)
             this.TryApply64(pk9, init, param, EncounterCriteria.Unrestricted, IVs.IsSpecified);
-
         if (IVs.IsSpecified)
         {
             pk.IV_HP = IVs.HP;
@@ -87,8 +87,8 @@ public sealed record EncounterStatic9(GameVersion Version) : EncounterStatic(Ver
             pk.IV_SPE = IVs.SPE;
         }
         if (Nature != Nature.Random)
-        {
             pk.Nature = pk.StatNature = (int)Nature;
-        }
+        if (Gender != -1)
+            pk.Gender = (byte)Gender;
     }
 }
